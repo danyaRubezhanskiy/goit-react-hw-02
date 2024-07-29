@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Description from "./components/Description/Description";
 import FeedBack from "./components/FeedBack/FeedBack";
 import Options from "./components/Options/Options";
 import Notification from "./components/Notification/Notification";
 
 function App() {
-  const [counter, setCounter] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-    positive: 0,
-  });
+  const [counter, setCounter] = useState(
+    JSON.parse(window.localStorage.getItem("feedback")) || {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+      positive: 0,
+    }
+  );
 
   let totalFeedback = counter.good + counter.neutral + counter.bad;
 
@@ -23,6 +25,10 @@ function App() {
   const resetFeedback = () => {
     setCounter({ good: 0, neutral: 0, bad: 0 });
   };
+
+  useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(counter));
+  }, [counter]);
 
   return (
     <>
